@@ -1,5 +1,5 @@
 /**************************************************************
-·ÖÖÎ·¨Çó½â×î´ó×ÓĞòÁĞºÍ
+åˆ†æ²»æ³•æ±‚è§£æœ€å¤§å­åºåˆ—å’Œ
 ***************************************************************/
 #include<iostream>
 #include<vector>
@@ -10,34 +10,34 @@ inline int max3(int a,int b,int c) {
     a = a>b ? a : b;
     return a>c?a:c;
 }
-//·ÖÖÎ·¨ÊµÏÖ£¬¸´ÔÓ¶ÈÎª O(nlogn)
+//åˆ†æ²»æ³•å®ç°ï¼Œå¤æ‚åº¦ä¸º O(nlogn)
 int maxSum( const int * a, int left, int right ) {
     if( left == right )  // Base case
         return a[left];
     int center = left + ((right-left)>>1);
     int maxLeftSum  = maxSum( a, left, center );
     int maxRightSum = maxSum( a, center + 1, right );
-    //Èç¹ûÕâ¸ö×î´óºÍ×Ö´®¿çÔ½ÁËÖĞµã...
-    //ÕÒµ½ÖĞµã×ó±ß×î´óºÍ
+    //å¦‚æœè¿™ä¸ªæœ€å¤§å’Œå­—ä¸²è·¨è¶Šäº†ä¸­ç‚¹...
+    //æ‰¾åˆ°ä¸­ç‚¹å·¦è¾¹æœ€å¤§å’Œ
     int maxLeftBorderSum = -INT_MAX, leftBorderSum = 0;
     for( int i = center; i >= left; i-- ) {
         leftBorderSum += a[ i ];
         if( leftBorderSum > maxLeftBorderSum )
             maxLeftBorderSum = leftBorderSum;
     }
-    //ÕÒµ½ÖĞµãÓÒ±ß×î´óºÍ
+    //æ‰¾åˆ°ä¸­ç‚¹å³è¾¹æœ€å¤§å’Œ
     int maxRightBorderSum = -INT_MAX, rightBorderSum = 0;
     for( int j = center + 1; j <= right; j++ ) {
         rightBorderSum += a[ j ];
         if( rightBorderSum > maxRightBorderSum )
             maxRightBorderSum = rightBorderSum;
     }
-    //È¡Èı¸öºÍµÄ×î´óÖµ×÷Îª¸Ã´®µÄ×î´ó×Ó´®ºÍ
+    //å–ä¸‰ä¸ªå’Œçš„æœ€å¤§å€¼ä½œä¸ºè¯¥ä¸²çš„æœ€å¤§å­ä¸²å’Œ
     return max3(maxLeftSum, maxRightSum, maxLeftBorderSum + maxRightBorderSum);
 }
-/**Kadane Ëã·¨ÊµÏÖ  ¸´ÔÓ¶ÈÎª O(n)
-	Èç¹ûµ±Ç°ºÍÎª¸ºÊı£¬ºóÃæµÄÊıÖµ¼ÓÉÏµ±Ç°ºÍÔò±ØÈ»Ğ¡ÓÚÔ­ÊıÖµ£¬ÔòÓ¦½«µ±Ç°ºÍ¶ªÆú¡£
-	´ÓµÚÒ»Ïî¿ªÊ¼±éÀúÇóºÍ£¬¸Ã×Ó´®Ö»¿ÉÄÜ´æÔÚÓÚÒ»¸ö·Ö×éÒÔÄÚ£¬ÇÒÏµÎª¸Ã·Ö×éµÄÇ°×º
+/**Kadane ç®—æ³•å®ç°  å¤æ‚åº¦ä¸º O(n)
+	å¦‚æœå½“å‰å’Œä¸ºè´Ÿæ•°ï¼Œåé¢çš„æ•°å€¼åŠ ä¸Šå½“å‰å’Œåˆ™å¿…ç„¶å°äºåŸæ•°å€¼ï¼Œåˆ™åº”å°†å½“å‰å’Œä¸¢å¼ƒã€‚
+	ä»ç¬¬ä¸€é¡¹å¼€å§‹éå†æ±‚å’Œï¼Œè¯¥å­ä¸²åªå¯èƒ½å­˜åœ¨äºä¸€ä¸ªåˆ†ç»„ä»¥å†…ï¼Œä¸”ç³»ä¸ºè¯¥åˆ†ç»„çš„å‰ç¼€
 **/
 int maxSummary(int A[], int n) {
     int mmax = A[0], cursum = 0;
@@ -47,9 +47,9 @@ int maxSummary(int A[], int n) {
     }
     return mmax;
 }
-//Èç¹ûĞèÒª¼ÇÂ¼×Ó´®µÄÎ»ÖÃ
+//å¦‚æœéœ€è¦è®°å½•å­ä¸²çš„ä½ç½®
 int maxSummary(int A[], int n, int pos[2]) {
-    int mmax = -INT_MAX, cursum = -1;//-1±íÊ¾»¹Î´¿ªÊ¼Í³¼Æ
+    int mmax = -INT_MAX, cursum = -1;//-1è¡¨ç¤ºè¿˜æœªå¼€å§‹ç»Ÿè®¡
     for(int i = 0; i < n; ++i) {
         if(cursum < 0) {
             cursum = A[i];
@@ -68,8 +68,8 @@ int main() {
     int b[] = {-2, -4, -3, -5, -1};
     int pos[2] = {0};
     cout<<maxSum(a,0,8)<<endl;
-    cout<<"×î´ó×Ó´®ºÍÎª: "<<maxSummary(a,9,pos)<<endl;
-    cout<<"×î´óºÍ×Ó´®Îª: ";
+    cout<<"æœ€å¤§å­ä¸²å’Œä¸º: "<<maxSummary(a,9,pos)<<endl;
+    cout<<"æœ€å¤§å’Œå­ä¸²ä¸º: ";
     for(int i=pos[0]; i<pos[1]; ++i)
         cout<<a[i]<<" ";
     cout<<endl;
