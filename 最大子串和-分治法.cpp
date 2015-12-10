@@ -6,6 +6,7 @@
 #include<climits>
 using namespace std;
 
+//求三个数的最大值
 inline int max3(int a,int b,int c) {
     a = a>b ? a : b;
     return a>c?a:c;
@@ -36,8 +37,8 @@ int maxSum( const int * a, int left, int right ) {
     return max3(maxLeftSum, maxRightSum, maxLeftBorderSum + maxRightBorderSum);
 }
 /**Kadane 算法实现  复杂度为 O(n)
-	如果当前和为负数，后面的数值加上当前和则必然小于原数值，则应将当前和丢弃。
-	从第一项开始遍历求和，该子串只可能存在于一个分组以内，且系为该分组的前缀
+    如果当前和为负数，后面的数值加上当前和则必然小于原数值，则应将当前和丢弃。
+    从第一项开始遍历求和，该子串只可能存在于一个分组以内，且系为该分组的前缀
 **/
 int maxSummary(int A[], int n) {
     int mmax = A[0], cursum = 0;
@@ -47,7 +48,7 @@ int maxSummary(int A[], int n) {
     }
     return mmax;
 }
-//如果需要记录子串的位置
+//如果需要记录子串的位置. 用int[2] 保存起始下标和结束下标[左闭右开区间)
 int maxSummary(int A[], int n, int pos[2]) {
     int mmax = -INT_MAX, cursum = -1;//-1表示还未开始统计
     for(int i = 0; i < n; ++i) {
@@ -63,6 +64,7 @@ int maxSummary(int A[], int n, int pos[2]) {
     }
     return mmax;
 }
+
 int main() {
     int a[] = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
     int b[] = {-2, -4, -3, -5, -1};
