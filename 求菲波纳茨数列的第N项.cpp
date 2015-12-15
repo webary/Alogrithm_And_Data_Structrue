@@ -1,5 +1,5 @@
 /**************************************************************
-���η������������к�
+求费波纳茨数列的第N项（0<N<100000000）,如果结果很多，对1000000007取模
 ***************************************************************/
 #include<iostream>
 #include<vector>
@@ -7,11 +7,12 @@
 using namespace std;
 
 const int arrSize = 100000000;
-static int data[arrSize]={1,1};
+static int data[arrSize]={1,1}; //约400MB
 void getData(){
         for(int i = 2; i < arrSize; i++)
             data[i] = (data[i-1]+data[i-2])%1000000007;
 }
+//第一种方式，用数组存储
 int getNthNumber(int n) {
         if(data[3]==0)
             getData();
@@ -25,7 +26,8 @@ int getNthNumber(int n) {
             left = tmp;
         }
         return right;
-    }
+}
+//第二种方式，用循环临时求得
 int getNthNumber2(int n) {
         int left=1,right=1,i,tmp;
         for(i = 2; i < n; i++){
@@ -36,6 +38,8 @@ int getNthNumber2(int n) {
         return right;
 }
 int main() {
-    for(int i=10000000; i<10000010; ++i)
-    	cout<<getNthNumber(i)<<" ";
+    int N;
+    while(cin>>N)
+    	cout<<getNthNumber(n)<<endl;
+    return 0;
 }
