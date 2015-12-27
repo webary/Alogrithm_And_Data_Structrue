@@ -55,16 +55,17 @@ int maxSummary(int A[], int n)
 }
 //如果需要记录子串的位置. 用int[2] 保存起始下标和结束下标[左闭右开区间)
 int maxSummary(int A[], int n, int pos[2]) {
-    int mmax = INT_MIN, cursum = INT_MIN;//INT_MIN表示还未开始统计
+    int mmax = INT_MIN, cursum = INT_MIN, start;//-1表示还未开始统计
     for(int i = 0; i < n; ++i) {
         if(cursum < 0) {
             cursum = A[i];
-            pos[0] = i;
+            start = i;
         } else
             cursum += A[i];
         if(cursum > mmax) {
             mmax = cursum;
-            pos[1] = i+1;
+            pos[0] = start;
+            pos[1] = i;
         }
     }
     return mmax;
