@@ -1,87 +1,80 @@
 /**
-	¸ø¶¨40ÒÚ¸öunsigned intµÄÕûÊı£¬Ã»ÅÅ¹ıĞòµÄ£»
-	È»ºóÔÙ¸øÒ»¸öÊı£¬ÈçºÎ¿ìËÙÅĞ¶ÏÕâ¸öÊıÊÇ·ñÔÚÄÇ40ÒÚ¸öÊıµ±ÖĞ
+ * è¯¥ä»£ç çš„è¯¦ç»†è§£æä»¥åŠæ›´å¤šå¤§æ•°æ®å¤„ç†ç›¸å…³é¢è¯•ç¬”è¯•é¢˜è§æˆ‘çš„åšå®¢:
+ * http://www.cnblogs.com/webary/p/4733247.html
+ *
+ * ç»™å®š40äº¿ä¸ªunsigned intçš„æ•´æ•°ï¼Œæ²¡æ’è¿‡åºçš„ï¼›
+ * ç„¶åå†ç»™ä¸€ä¸ªæ•°ï¼Œå¦‚ä½•å¿«é€Ÿåˆ¤æ–­è¿™ä¸ªæ•°æ˜¯å¦åœ¨é‚£40äº¿ä¸ªæ•°å½“ä¸­
 **/
 #include<iostream>
 #include<fstream>
 #include<ctime>
 using namespace std;
-const unsigned SIZE = 512000000;//512Õ×¾²Ì¬´æ´¢Çø¿É´¦Àí40.96ÒÚÊı¾İ
+const unsigned SIZE = 512000000;//512å…†é™æ€å­˜å‚¨åŒºå¯å¤„ç†40.96äº¿æ•°æ®
 
-class Bitmap {
+class Bitmap
+{
     typedef struct Byte {
         unsigned char bit8;
-		static const unsigned char mask[9];//ÓÃÀ´È¡µÃÒ»¸ö×Ö½ÚÃ¿Ò»Î»µÄ¸¨ÖúÊı×é
-        Byte()
-        {
+        static const unsigned char mask[8];//ç”¨æ¥å–å¾—ä¸€ä¸ªå­—èŠ‚æ¯ä¸€ä½çš„è¾…åŠ©æ•°ç»„
+        Byte() {
             bit8 = 0;
         }
-        //ÉèÖÃ¸ÃÎ»£¬¾ÍÊÇ´æ´¢¸ÃÊı
-        void set1(unsigned at)
-        {
+        //è®¾ç½®è¯¥ä½ï¼Œå°±æ˜¯å­˜å‚¨è¯¥æ•°
+        void set1(unsigned at) {
             bit8 |= mask[at];
         }
-        //¶ÁÈ¡¸ÃÎ»ÊÇ·ñÓĞÊı
-        bool get1(unsigned at)
-        {
+        //è¯»å–è¯¥ä½æ˜¯å¦æœ‰æ•°
+        bool get1(unsigned at) {
             return bit8 & mask[at];
         }
     } Byte;
     Byte *m_byte;
     unsigned m_size;
 public:
-    Bitmap(unsigned _size)
-    {
+    Bitmap(unsigned _size) {
         m_byte = new Byte[(_size+7)/8];
         m_size = _size;
     }
-    virtual ~Bitmap()
-    {
+    virtual ~Bitmap() {
         delete[] m_byte;
         m_size = 0;
     }
-    //´æ´¢Ò»¸öÊı¾İ
-    bool push(unsigned data)
-    {
+    //å­˜å‚¨ä¸€ä¸ªæ•°æ®
+    bool push(unsigned data) {
         if(data>=m_size)
             return false;
         m_byte[data/8].set1(data%8);
         return true;
     }
-    //¶ÁÈ¡Ò»¸öÊı¾İÊÇ·ñ´æÔÚ
-    bool find(unsigned data)
-    {
+    //è¯»å–ä¸€ä¸ªæ•°æ®æ˜¯å¦å­˜åœ¨
+    bool find(unsigned data) {
         return data>=m_size ? 0 : m_byte[data/8].get1(data%8);
     }
-    //·µ»ØÄÜ´æ´¢µÄÊı¾İ¸öÊı
-    unsigned size()
-    {
+    //è¿”å›èƒ½å­˜å‚¨çš„æ•°æ®ä¸ªæ•°
+    unsigned size() {
         return m_size;
     }
-    //ÖØÔØÔËËã·ûÊµÏÖ³£ÓÃ¹¦ÄÜ
-    //´æ´¢Ò»¸öÊı¾İ
-    bool operator>>(unsigned data)
-    {
+    //é‡è½½è¿ç®—ç¬¦å®ç°å¸¸ç”¨åŠŸèƒ½
+    //å­˜å‚¨ä¸€ä¸ªæ•°æ®
+    bool operator>>(unsigned data) {
         return push(data);
     }
-    //¶ÁÈ¡Ò»¸öÊı¾İÊÇ·ñ´æÔÚ
-    bool operator<<(unsigned data)
-    {
+    //è¯»å–ä¸€ä¸ªæ•°æ®æ˜¯å¦å­˜åœ¨
+    bool operator<<(unsigned data) {
         return find(data);
     }
-    //·ÃÎÊµ½Ä³¸öÊı¾İ¿é
-    Byte& operator[](unsigned i)
-    {
+    //è®¿é—®åˆ°æŸä¸ªæ•°æ®å—
+    Byte& operator[](unsigned i) {
         if(i>=m_size/8)
             throw "index out of range";
         return m_byte[i];
     }
 };
-const unsigned char Bitmap::Byte::mask[9] = {0x80,0x40,0x20,0x10,0x8,0x4,0x2,0x1};//ÓÃÀ´È¡µÃÒ»¸ö×Ö½ÚÃ¿Ò»Î»µÄ¸¨ÖúÊı×é
+const unsigned char Bitmap::Byte::mask[8] = {0x80,0x40,0x20,0x10,0x8,0x4,0x2,0x1};//ç”¨æ¥å–å¾—ä¸€ä¸ªå­—èŠ‚æ¯ä¸€ä½çš„è¾…åŠ©æ•°ç»„
 
 int main()
 {
-    Bitmap bitmap(8*SIZE);//¿ÉÒÔ´æ´¢40+ÒÚÊı¾İ
+    Bitmap bitmap(8*SIZE);//å¯ä»¥å­˜å‚¨40+äº¿æ•°æ®
     ifstream file("in.txt");
     unsigned read, i=0, t1 = clock();
     for(i=0; i<SIZE; ++i)
@@ -90,18 +83,18 @@ int main()
         else
             break;
     file.close();
-    cout<<"¹²´æ´¢"<<i/10000<<"W Êı¾İ, "<<"ºÄÊ±: "<<clock()-t1<<"ms"<<endl;
+    cout<<"å…±å­˜å‚¨"<<i/10000<<"W æ•°æ®, "<<"è€—æ—¶: "<<clock()-t1<<"ms"<<endl;
     t1 = clock();
     for(i=0; i<1000000; ++i)
         if(bitmap<<i)
             ;
-    cout<<"·ÃÎÊ"<<i/10000<<"W Êı¾İ¹²ºÄÊ±: "<<clock()-t1<<"ms"<<endl;
-    cout<<"ÇëÊäÈëĞèÒª¼ìË÷µÄÊı¾İ:"<<endl;
+    cout<<"è®¿é—®"<<i/10000<<"W æ•°æ®å…±è€—æ—¶: "<<clock()-t1<<"ms"<<endl;
+    cout<<"è¯·è¾“å…¥éœ€è¦æ£€ç´¢çš„æ•°æ®:"<<endl;
     while(cin>>read) {
         if(bitmap<<read)
-            cout<<"ÒÑ´æ´¢"<<read<<endl;
+            cout<<"å·²å­˜å‚¨"<<read<<endl;
         else
-            cout<<"Error: Î´´æ´¢"<<read<<endl;
+            cout<<"Error: æœªå­˜å‚¨"<<read<<endl;
     }
     return 0;
 }
