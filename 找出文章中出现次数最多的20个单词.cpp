@@ -1,11 +1,11 @@
 #include <iostream>
 #include <fstream>
-#include <ctime>
 #include <algorithm>
 #include <string>
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <ctime>
 using namespace std;
 
 typedef string keyType; //单词
