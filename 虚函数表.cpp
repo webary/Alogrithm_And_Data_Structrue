@@ -3,64 +3,71 @@ using namespace std;
 
 class Base {
 public:
-	virtual void f() { cout << "Base::f" << endl; }
-	virtual void g() { cout << "Base::g" << endl; }
-	virtual void h() { cout << "Base::h" << endl; }
-	virtual ~Base(){}
+    virtual void f()
+    {
+        cout << "Base::f" << endl;
+    }
+    virtual void g()
+    {
+        cout << "Base::g" << endl;
+    }
+    virtual void h()
+    {
+        cout << "Base::h" << endl;
+    }
+    virtual ~Base() {}
 };
 class Base2 {
 public:
-	virtual void f() { cout << "Base::f" << endl; }
+    virtual void f()
+    {
+        cout << "Base::f" << endl;
+    }
 };
 
-class Derived :  public Base{
+class Derived :  public Base {
 public:
-	void g() {
-		cout<<"Derived::g"<<endl;
-	}
-	int getA(){
-		return a;
-	}
-	virtual ~Derived(){}
+    void g()
+    {
+        cout << "Derived::g" << endl;
+    }
+    int getA()
+    {
+        return a;
+    }
+    virtual ~Derived() {}
 private:
-	int a;
+    int a;
 };
-//¶àÖØ¼Ì³ÐÊ±£¬ÓµÓÐÁ½¸öÐéº¯Êý±íÖ¸Õë
-class Derived2 :public Base2,Base{
+//å¤šé‡ç»§æ‰¿æ—¶ï¼Œæ‹¥æœ‰ä¸¤ä¸ªè™šå‡½æ•°è¡¨æŒ‡é’ˆ
+class Derived2 : public Base2, Base {
 public:
-	void g() {
-		cout<<"Derived::g"<<endl;
-	}
+    void g()
+    {
+        cout << "Derived::g" << endl;
+    }
 };
 
 int main()
 {
-	Base2 b2;
-	cout<<sizeof(Base)<<" "<<sizeof(Base2)<<" "
-		<<sizeof(Derived)<<" "<<sizeof(Derived2)<<endl;
-	typedef void(*Fun)(void);
-
-	Derived d;
-	Base &b = d;
-	cout<<sizeof(b)<<sizeof(d)<<endl;
-	Fun pFun = NULL;
-
-	cout << "Ðéº¯Êý±íµØÖ·£º" << (int*)(&b) << endl;
-
-	cout << "Ðéº¯Êý±í ¡ª µÚÒ»¸öº¯ÊýµØÖ·£º" << (int*)*(int*)(&b) << endl;
-
-	// Invoke the first virtual function
-
-	pFun = (Fun)*((int*)*(int*)(&b)+0); // Base::f()
-	pFun();
-
-	pFun = (Fun)*((int*)*(int*)(&b)+1); // Base::g()
-	pFun();
-
-	pFun = (Fun)*((int*)*(int*)(&b)+2); // Base::h()
-	pFun();
-
-	*((int*)(&b)+1) = 555;
-	cout<<d.getA()<<endl;
-	return 0;
+    Base2 b2;
+    cout << sizeof(Base) << " " << sizeof(Base2) << " "
+         << sizeof(Derived) << " " << sizeof(Derived2) << endl;
+    typedef void(*Fun)(void);
+    Derived d;
+    Base &b = d;
+    cout << sizeof(b) << sizeof(d) << endl;
+    Fun pFun = NULL;
+    cout << "è™šå‡½æ•°è¡¨åœ°å€ï¼š" << (int*)(&b) << endl;
+    cout << "è™šå‡½æ•°è¡¨ â€” ç¬¬ä¸€ä¸ªå‡½æ•°åœ°å€ï¼š" << (int*)*(int*)(&b) << endl;
+    // Invoke the first virtual function
+    pFun = (Fun) * ((int*) * (int*)(&b) + 0); // Base::f()
+    pFun();
+    pFun = (Fun) * ((int*) * (int*)(&b) + 1); // Derived::g()
+    pFun();
+    pFun = (Fun) * ((int*) * (int*)(&b) + 2); // Base::h()
+    pFun();
+    *((int*)(&b) + 1) = 555;
+    cout << d.getA() << endl;
+    return 0;
 }
