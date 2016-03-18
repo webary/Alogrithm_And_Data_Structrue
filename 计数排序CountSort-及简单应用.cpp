@@ -35,12 +35,26 @@ void rangeSort(int arr[], int len)
     int data[65536] = {0}, i, j;
     for(i = 0; i < len; ++i)
         ++data[arr[i]];
-    for(i = j = 0; i < len;) {
+    for(i = j = 0; i < len;)
         if(data[j]--)
             arr[i++] = j ;
         else
             j++;
-    }
+}
+
+//找出成绩表中前k的分数(满分为100),并从大到小输出
+void sortAndGetTopK(int score[], int len, int k, int res[])
+{
+    if(score == NULL || res == NULL || len <= 0 || k <= 0)
+        return ;
+    int data[101] = {0}, i, j; //分数最大为100,所以数组大小定义为101
+    for(i = 0; i < len; ++i)
+        ++data[score[i]];
+    for(i = 0, j = 100; i < k; ) //因为要找最大的k个,所以倒着找
+        if(data[j]--)
+            res[i++] = j ;
+        else
+            --j;
 }
 
 int main()
@@ -51,5 +65,17 @@ int main()
     rangeSort(a, n);
     for(int i = 0; i < n; ++i)
         cout << a[i] << " ";
+    cout << endl;
+    //计数排序简单应用:找出成绩表中前k的分数值
+    int score[] = {67, 34, 89, 93, 82, 99, 16, 100, 77, 91}, top[5];
+    int len_s = sizeof(score) / sizeof(score[0]);
+    sortAndGetTopK(score, len_s, 5, top);
+    cout << "\n成绩列表为：";
+    for(auto &elem : score)
+        cout << elem << " ";
+    cout << endl << "top k成绩为：";
+    for(auto &elem : top)
+        cout << elem << " ";
+    cout << endl;
     return 0;
 }
