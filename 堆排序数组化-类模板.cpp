@@ -2,12 +2,13 @@
 #include <vector>
 using namespace std;
 
+enum HeapType {HT_MaxHeap, HT_MinHeap}; //定义堆的类型:可以是大根堆或小根堆
+
 template<typename T>
 class HeapSort {
     vector<T> data;  //堆中的数据
     bool heapSelect; //堆类型
 public:
-    enum HeapType {maxHeap, minHeap}; //定义堆的类型:可以是小根堆或大根堆
     //传递数组名和大小来初始化堆
     HeapSort(const T a[], size_t n, HeapType tp): data(a, a + n), heapSelect(tp)
     {
@@ -86,13 +87,13 @@ protected:
     //在向下调整时的比较(与堆类型有关)
     bool cmpInFixDown(const T& x, const T& y, bool orEqual = false)
     {
-        return heapSelect == minHeap ? (orEqual ? x >= y : x > y)
+        return heapSelect == HT_MinHeap ? (orEqual ? x >= y : x > y)
                : (orEqual ? x <= y : x < y);
     }
     //在向上调整时的比较(与堆类型有关)
     bool cmpInFixUp(const T& x, const T& y)
     {
-        return heapSelect == minHeap ? x < y : x > y;
+        return heapSelect == HT_MinHeap ? x < y : x > y;
     }
 };
 
@@ -100,49 +101,36 @@ int main()
 {
     int a[] = {9, 12, 17, 30, 50, 20, 60, 65, 4, 19};
     int b[] = {5, 8, 12, 19, 28, 20, 15, 22};
-    HeapSort<int> minHeap1(b, HeapSort<int>::minHeap); //用数组建立小根堆
+
+    HeapSort<int> minHeap1(b, HT_MinHeap); //用数组建立小根堆
     minHeap1.print("建堆完成后:"); //输出建堆完成后的序列
+
     minHeap1.addNumber(3);
     minHeap1.print("插入3调整后:"); //插入3之后调整堆完成后的序列
+
     minHeap1.sort();  //利用小根堆进行堆排序：小根堆排序后结果是递减的
     minHeap1.print("堆排完成后:"); //输出排序后数组
+
     cout << endl;
-    HeapSort<int> maxHeap1(a, HeapSort<int>::maxHeap); //用数组建立大根堆
+
+    HeapSort<int> maxHeap1(a, HT_MaxHeap); //用数组建立大根堆
     maxHeap1.print("建堆完成后:");
+
     maxHeap1.sort();  //利用大根堆进行堆排序：大根堆排序后结果是递增的
     maxHeap1.print("堆排完成后:"); //输出排序后数组
+
     return 0;
 }
 
-///下面是C形式的堆排序数组化
 
+///下面是C形式的堆排序数组化
 //新加入i结点 其父结点为(i - 1) / 2
-void MinHeapFixup2(int a[], int i)
-{
-    int j, temp;
-    temp = a[i];
-    j = (i - 1) / 2;      //父结点
-    while (j >= 0 && i != 0) {
-        if (a[j] <= temp)
-            break;
-        a[i] = a[j];     //把较大的子结点往下移动,替换它的子结点
-        i = j;
-        j = (i - 1) / 2;
-    }
-    a[i] = temp;
-}
 void MinHeapFixup(int a[], int i)
 {
     for (int j = (i - 1) / 2; (j >= 0 && i != 0) && a[i] > a[j]; i = j, j = (i - 1) / 2)
         swap(a[i], a[j]);
 }
-//在最小堆中加入新的数据nNum
-void MinHeapAddNumber(int a[], int n, int nNum)
-{
-    a[n] = nNum;
-    MinHeapFixup(a, n);
-}
-//  从i节点开始调整,n为节点总数 从0开始计算 i节点的子节点为 2*i+1, 2*i+2
+//从i节点开始调整,n为节点总数 从0开始计算 i节点的子节点为 2*i+1, 2*i+2
 void MinHeapFixdown(int a[], int i, int n)
 {
     int j, temp = a[i];
@@ -158,12 +146,6 @@ void MinHeapFixdown(int a[], int i, int n)
     }
     a[i] = temp;
 }
-//在小根堆中删除数
-void MinHeapDeleteNumber(int a[], int n)
-{
-    swap(a[0], a[n - 1]);
-    MinHeapFixdown(a, 0, n - 1);
-}
 //建立最小堆
 void MakeMinHeap(int a[], int n)
 {
@@ -177,6 +159,18 @@ void MinHeapSort(int a[], int n)
         swap(a[i], a[0]);
         MinHeapFixdown(a, 0, i);
     }
+}
+//在最小堆中加入新的数据nNum
+void MinHeapAddNumber(int a[], int n, int nNum)
+{
+    a[n] = nNum;
+    MinHeapFixup(a, n);
+}
+//在小根堆中删除数
+void MinHeapDeleteNumber(int a[], int n)
+{
+    swap(a[0], a[n - 1]);
+    MinHeapFixdown(a, 0, n - 1);
 }
 //下面是C形式的调用方式
 int main2()
