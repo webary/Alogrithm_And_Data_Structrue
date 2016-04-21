@@ -1,162 +1,169 @@
-// by MoreWindows( http://blog.csdn.net/MoreWindows )
 #include <cstdio>
 #include <algorithm>
 #include <ctime>
 using namespace std;
-//------------------------¿ìËÙÅÅĞò----------------------------
+//------------------------å¿«é€Ÿæ’åº----------------------------
 void quick_sort(int s[], int l, int r)
 {
-	if (l < r)
-	{
-		int i = l, j = r, x = s[l];
-		while (i < j)
-		{
-			while(i < j && s[j] >= x) // ´ÓÓÒÏò×óÕÒµÚÒ»¸öĞ¡ÓÚxµÄÊı
-				j--;
-			if(i < j)
-				s[i++] = s[j];
+    if (l < r) {
+        int i = l, j = r, x = s[l];
+        while (i < j) {
+            while(i < j && s[j] >= x) { // ä»å³å‘å·¦æ‰¾ç¬¬ä¸€ä¸ªå°äºxçš„æ•°
+                j--;
+            }
+            if(i < j) {
+                s[i++] = s[j];
+            }
 
-			while(i < j && s[i] < x) // ´Ó×óÏòÓÒÕÒµÚÒ»¸ö´óÓÚµÈÓÚxµÄÊı
-				i++;
-			if(i < j)
-				s[j--] = s[i];
-		}
-		s[i] = x;
-		quick_sort(s, l, i - 1); // µİ¹éµ÷ÓÃ
-		quick_sort(s, i + 1, r);
-	}
+            while(i < j && s[i] < x) { // ä»å·¦å‘å³æ‰¾ç¬¬ä¸€ä¸ªå¤§äºç­‰äºxçš„æ•°
+                i++;
+            }
+            if(i < j) {
+                s[j--] = s[i];
+            }
+        }
+        s[i] = x;
+        quick_sort(s, l, i - 1); // é€’å½’è°ƒç”¨
+        quick_sort(s, i + 1, r);
+    }
 }
-//------------------------¹é²¢ÅÅĞò----------------------------
-//½«ÓĞ¶ş¸öÓĞĞòÊıÁĞa[first...mid]ºÍa[mid...last]ºÏ²¢¡£
+//------------------------å½’å¹¶æ’åº----------------------------
+//å°†æœ‰äºŒä¸ªæœ‰åºæ•°åˆ—a[first...mid]å’Œa[mid...last]åˆå¹¶ã€‚
 void mergearray(int a[], int first, int mid, int last, int temp[])
 {
-	int i = first, j = mid + 1;
-	int m = mid,   n = last;
-	int k = 0;
+    int i = first, j = mid + 1;
+    int m = mid,   n = last;
+    int k = 0;
 
-	while (i <= m && j <= n)
-	{
-		if (a[i] < a[j])
-			temp[k++] = a[i++];
-		else
-			temp[k++] = a[j++];
-	}
+    while (i <= m && j <= n) {
+        if (a[i] < a[j]) {
+            temp[k++] = a[i++];
+        } else {
+            temp[k++] = a[j++];
+        }
+    }
 
-	while (i <= m)
-		temp[k++] = a[i++];
+    while (i <= m) {
+        temp[k++] = a[i++];
+    }
 
-	while (j <= n)
-		temp[k++] = a[j++];
+    while (j <= n) {
+        temp[k++] = a[j++];
+    }
 
-	for (i = 0; i < k; i++)
-		a[first + i] = temp[i];
+    for (i = 0; i < k; i++) {
+        a[first + i] = temp[i];
+    }
 }
 void mergesort(int a[], int first, int last, int temp[])
 {
-	if (first < last)
-	{
-		int mid = (first + last) / 2;
-		mergesort(a, first, mid, temp);    //×ó±ßÓĞĞò
-		mergesort(a, mid + 1, last, temp); //ÓÒ±ßÓĞĞò
-		mergearray(a, first, mid, last, temp); //ÔÙ½«¶ş¸öÓĞĞòÊıÁĞºÏ²¢
-	}
+    if (first < last) {
+        int mid = (first + last) / 2;
+        mergesort(a, first, mid, temp);    //å·¦è¾¹æœ‰åº
+        mergesort(a, mid + 1, last, temp); //å³è¾¹æœ‰åº
+        mergearray(a, first, mid, last, temp); //å†å°†äºŒä¸ªæœ‰åºæ•°åˆ—åˆå¹¶
+    }
 }
 bool MergeSort(int a[], int n)
 {
-	int *p = new int[n];
-	if (p == NULL)
-		return false;
-	mergesort(a, 0, n - 1, p);
-	return true;
+    int *p = new int[n];
+    if (p == NULL) {
+        return false;
+    }
+    mergesort(a, 0, n - 1, p);
+    return true;
 }
-//------------------------¶ÑÅÅĞò---------------------------
+//------------------------å †æ’åº---------------------------
 inline void Swap(int &a, int &b)
 {
-	int c = a;
-	a = b;
-	b = c;
+    int c = a;
+    a = b;
+    b = c;
 }
-//½¨Á¢×îĞ¡¶Ñ
-//  ´Ói½Úµã¿ªÊ¼µ÷Õû,nÎª½Úµã×ÜÊı ´Ó0¿ªÊ¼¼ÆËã i½ÚµãµÄ×Ó½ÚµãÎª 2*i+1, 2*i+2
+//å»ºç«‹æœ€å°å †
+//  ä»ièŠ‚ç‚¹å¼€å§‹è°ƒæ•´,nä¸ºèŠ‚ç‚¹æ€»æ•° ä»0å¼€å§‹è®¡ç®— ièŠ‚ç‚¹çš„å­èŠ‚ç‚¹ä¸º 2*i+1, 2*i+2
 void MinHeapFixdown(int a[], int i, int n)
 {
-	int j, temp;
+    int temp = a[i];
+    int j = 2 * i + 1;
+    while (j < n) {
+        if (j + 1 < n && a[j + 1] < a[j]) { //åœ¨å·¦å³å­©å­ä¸­æ‰¾æœ€å°çš„
+            j++;
+        }
 
-	temp = a[i];
-	j = 2 * i + 1;
-	while (j < n)
-	{
-		if (j + 1 < n && a[j + 1] < a[j]) //ÔÚ×óÓÒº¢×ÓÖĞÕÒ×îĞ¡µÄ
-			j++;
+        if (a[j] >= temp) {
+            break;
+        }
 
-		if (a[j] >= temp)
-			break;
-
-		a[i] = a[j];     //°Ñ½ÏĞ¡µÄ×Ó½áµãÍùÉÏÒÆ¶¯,Ìæ»»ËüµÄ¸¸½áµã
-		i = j;
-		j = 2 * i + 1;
-	}
-	a[i] = temp;
+        a[i] = a[j];     //æŠŠè¾ƒå°çš„å­ç»“ç‚¹å¾€ä¸Šç§»åŠ¨,æ›¿æ¢å®ƒçš„çˆ¶ç»“ç‚¹
+        i = j;
+        j = 2 * i + 1;
+    }
+    a[i] = temp;
 }
-//½¨Á¢×îĞ¡¶Ñ
+//å»ºç«‹æœ€å°å †
 void MakeMinHeap(int a[], int n)
 {
-	for (int i = n / 2 - 1; i >= 0; i--)
-		MinHeapFixdown(a, i, n);
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        MinHeapFixdown(a, i, n);
+    }
 }
 void MinheapsortTodescendarray(int a[], int n)
 {
-	for (int i = n - 1; i >= 1; i--)
-	{
-		Swap(a[i], a[0]);
-		MinHeapFixdown(a, 0, i);
-	}
+    for (int i = n - 1; i >= 1; i--) {
+        Swap(a[i], a[0]);
+        MinHeapFixdown(a, 0, i);
+    }
 }
+
 const int MAXN = 5000000;
 int a[MAXN];
 int b[MAXN], c[MAXN], d[MAXN];
+
 int main()
 {
-	int i;
-	srand(time(NULL));
-	for (i = 0; i < MAXN; ++i)
-		a[i] = rand() * rand(); //×¢rand()²úÉúµÄÊıÔÚ0µ½0x7FFFÖ®¼ä
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < MAXN; ++i) {
+        a[i] = rand() * rand();    //æ³¨rand()äº§ç”Ÿçš„æ•°åœ¨0åˆ°0x7FFFä¹‹é—´
+    }
 
-	for (i = 0; i < MAXN; ++i)
-		d[i] = c[i] = b[i] = a[i];
+    for (i = 0; i < MAXN; ++i) {
+        d[i] = c[i] = b[i] = a[i];
+    }
 
     clock_t ibegin, iend;
 
-	printf("--µ±Ç°Êı¾İÁ¿Îª%d--By MoreWindows(http://blog.csdn.net/MoreWindows)--\n", MAXN);
-	//¿ìËÙÅÅĞò
-	printf("¿ìËÙÅÅĞò:  ");
-	ibegin = clock();
-	quick_sort(a, 0, MAXN - 1);
-	iend = clock();
-	printf("%dºÁÃë\n", iend - ibegin);
+    printf("--å½“å‰æ•°æ®é‡ä¸º%d\n", MAXN);
+    //å¿«é€Ÿæ’åº
+    printf("å¿«é€Ÿæ’åº:  ");
+    ibegin = clock();
+    quick_sort(a, 0, MAXN - 1);
+    iend = clock();
+    printf("%dæ¯«ç§’\n", iend - ibegin);
 
 
-	//¹é²¢ÅÅĞò
-	printf("¹é²¢ÅÅĞò:  ");
-	ibegin = clock();
-	MergeSort(b, MAXN);
-	iend = clock();
-	printf("%dºÁÃë\n", iend - ibegin);
+    //å½’å¹¶æ’åº
+    printf("å½’å¹¶æ’åº:  ");
+    ibegin = clock();
+    MergeSort(b, MAXN);
+    iend = clock();
+    printf("%dæ¯«ç§’\n", iend - ibegin);
 
-	//¶ÑÅÅĞò
-	printf("¶ÑÅÅĞò:  ");
-	ibegin = clock();
-	MakeMinHeap(c, MAXN);
-	MinheapsortTodescendarray(c, MAXN);
-	iend = clock();
-	printf("%dºÁÃë\n", iend - ibegin);
+    //å †æ’åº
+    printf("å †æ’åº:  ");
+    ibegin = clock();
+    MakeMinHeap(c, MAXN);
+    MinheapsortTodescendarray(c, MAXN);
+    iend = clock();
+    printf("%dæ¯«ç§’\n", iend - ibegin);
 
-	//STLÖĞµÄ¶ÑÅÅĞò
-	printf("STLÖĞµÄ¶ÑÅÅĞò: ");
-	ibegin = clock();
-	make_heap(d, d + MAXN);
-	sort_heap(d, d + MAXN);
-	iend = clock();
-	printf("%dºÁÃë\n", iend - ibegin);
-	return 0;
+    //STLä¸­çš„å †æ’åº
+    printf("STLä¸­çš„å †æ’åº: ");
+    ibegin = clock();
+    make_heap(d, d + MAXN);
+    sort_heap(d, d + MAXN);
+    iend = clock();
+    printf("%dæ¯«ç§’\n", iend - ibegin);
+    return 0;
 }
