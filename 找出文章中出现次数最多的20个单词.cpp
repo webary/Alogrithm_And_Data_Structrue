@@ -9,7 +9,7 @@
 using namespace std;
 
 typedef string keyType; //单词
-typedef int valueType; //词频
+typedef int valueType;  //词频
 typedef unordered_map<keyType, valueType> MapType; //这里可以改为map测试时间性能
 
 //将map按值排序
@@ -54,13 +54,13 @@ int main()
     time_t t_start = clock();
     ifstream fin("artical.txt");
     splitWordsAndSave(wordCount, fin); //如果想手工输入将参数改为(wordCount,cin)
-    cout << wordCount.size() << " words save to map took "
-         << clock() - t_start << "ms" << endl;
+    cout << wordCount.size() << " different words save to map took "
+         << clock() - t_start << "ms, ";
     vector<pair<keyType, valueType> > vec;
     sortMapByValue(wordCount, vec);
-    cout << "sort took " << clock() - t_start << "ms" << endl << "top 20 words:\n";
+    cout << "sort took " << clock() - t_start << "ms.\n\ntop 20 words:\n";
     for (size_t i = 0; i < 20 && i < vec.size(); ++i)
-        cout << vec[i].first << " \t" << vec[i].second << endl;
+        cout << vec[i].first << '\t' << vec[i].second << endl;
     cin.get();
     return 0;
 }
