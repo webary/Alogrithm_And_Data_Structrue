@@ -8,44 +8,23 @@ int maxlen;
 int maxindex;
 char visit[256];
 void output(const char * arr);
-/* LNRS ¶¯Ì¬¹æ»® + hash ¼ÇÂ¼ÏÂ±ê */
-int dp[100];
-void LNRS_dp_hash(const char * arr, int size=0) {
-	if(size==0)
-		size = strlen(arr);
-    memset(visit, -1, sizeof(visit)); //visitÊı×éÊÇ-1µÄÊ±ºò´ú±íÕâ¸ö×Ö·ûÃ»ÓĞÔÚ¼¯ºÏÖĞ
-    memset(dp, 0, sizeof(dp));
-    maxlen = maxindex = 0;
-    dp[0] = 1;
-    visit[arr[0]] = 0;
-    for(int i = 1; i < size; ++i) {
-        if(visit[arr[i]] == -1) { //±íÊ¾arr[i]Õâ¸ö×Ö·ûÒÔÇ°²»´æÔÚ
-            dp[i] = dp[i-1] + 1;
-            visit[arr[i]] = i; /* ¼ÇÂ¼×Ö·ûÏÂ±ê */
-        } else {
-            dp[i] = i - visit[arr[i]];
-        }
-        if(dp[i] > maxlen) {
-            maxlen = dp[i];
-            maxindex = i + 1 - maxlen;
-        }
-    }
-    output(arr);
-}
-/* LNRS ¶¯Ì¬¹æ»®+hash£¬Ê±¼ä¸´ÔÓ¶ÈO(n) ¿Õ¼ä¸´ÔÓ¶ÈO(1)Ëã·¨*/
-void LNRS_dp_hash_ultimate(const char * arr, int size=0) {
+/* LNRS åŠ¨æ€è§„åˆ’+hashï¼Œæ—¶é—´å¤æ‚åº¦O(n) ç©ºé—´å¤æ‚åº¦O(1)ç®—æ³•*/
+void LNRS_dp_hash_ultimate(const char * arr, int size=0) 
+{
 	if(size==0)
 		size = strlen(arr);
     memset(visit, -1, sizeof(visit));
     maxlen = maxindex = 0;
     visit[arr[0]] = 0;
     int curlen = 1;
-    for(int i = 1; i < size; ++i) {
+    for(int i = 1; i < size; ++i) 
+	{
         if(visit[arr[i]] == -1) {
             ++curlen;
-            visit[arr[i]] = i; /* ¼ÇÂ¼×Ö·ûÏÂ±ê */
+            visit[arr[i]] = i; /* è®°å½•å­—ç¬¦ä¸‹æ ‡ */
         } else {
             curlen = i - visit[arr[i]];
+			visit[arr[i]]=i;
         }
         if(curlen > maxlen) {
             maxlen = curlen;
@@ -64,6 +43,8 @@ void output(const char* arr)
 
 int main()
 {
-	LNRS_dp_hash_ultimate("123453678");
+	const char *arr="13234536738";
+	LNRS_dp_hash_ultimate(arr);
+	cin.get();
 	return 0;
 }
