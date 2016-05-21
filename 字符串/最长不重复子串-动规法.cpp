@@ -21,7 +21,7 @@ void LNRS_dp_hash_ultimate(const char * arr, int size = 0)
     for (int i = 1; i < size; ++i) {
         if (visit[arr[i]] == -1) {
             ++curlen;
-            visit[arr[i]] = i; /* 记录字符下标 */
+            visit[arr[i]] = i;
         } else {
             curlen = i - visit[arr[i]];
             visit[arr[i]] = i;
