@@ -8,21 +8,21 @@
 #include <unordered_map>
 using namespace std;
 
-typedef string keyType; //å•è¯
-typedef int valueType; //è¯é¢‘
-typedef map<keyType, valueType> MapType; //é€™é‡Œå¯ä»¥å°†unordered_mapæ”¹ä¸ºmapæµ‹è¯•
-//æ’åºè¿‡ç¨‹ä¸­ä½¿ç”¨çš„æ¯”è¾ƒå‡½æ•°,å³ä¿è¯æŒ‰è¯é¢‘æ’åº
+typedef string keyType; //µ¥´Ê
+typedef int valueType; //´ÊÆµ
+typedef map<keyType, valueType> MapType; //ß@Àï¿ÉÒÔ½«unordered_map¸ÄÎªmap²âÊÔ
+//ÅÅĞò¹ı³ÌÖĞÊ¹ÓÃµÄ±È½Ïº¯Êı,¼´±£Ö¤°´´ÊÆµÅÅĞò
 template<typename T1, typename T2>
 int cmp(const pair<T1, T2>& x, const pair<T1, T2>& y)
 {
     return x.second > y.second;
 }
-//å°†mapæŒ‰å€¼æ’åº
+//½«map°´ÖµÅÅĞò
 template<typename T1, typename T2>
 void sortMapByValue(const MapType& tMap, vector<pair<T1, T2> >& tVector)
 {
-    tVector.reserve(tMap.size()); //å°†apä¸­çš„æ•°æ®å¤åˆ¶åˆ°vectorä¸­å¹¶æ’åº
-    for(auto &elem : tMap)
+    tVector.reserve(tMap.size()); //½«apÖĞµÄÊı¾İ¸´ÖÆµ½vectorÖĞ²¢ÅÅĞò
+    for (auto &elem : tMap)
         tVector.push_back(make_pair(elem.first, elem.second));
     sort(tVector.begin(), tVector.end(), cmp<T1, T2>);
 }
@@ -32,20 +32,20 @@ int main(int argc, char* argv[])
     MapType wordCount;
     keyType tmpKey;
     ifstream fileIn;
-    if(argc > 1) //å¦‚æœæ˜¯ä»å‘½ä»¤è¡Œæ‰“å¼€,å¹¶è¾“å…¥äº†å‚æ•°,åˆ™æ¥æ”¶å‘½ä»¤è¡Œçš„å‚æ•°
+    if (argc > 1) //Èç¹ûÊÇ´ÓÃüÁîĞĞ´ò¿ª,²¢ÊäÈëÁË²ÎÊı,Ôò½ÓÊÕÃüÁîĞĞµÄ²ÎÊı
         fileIn.open(argv[1]);
-    else  //å¦åˆ™ç›´æ¥ä»"words.txt"è¯»å–è¾“å…¥
-        fileIn.open("words.txt");
+    else  //·ñÔòÖ±½Ó´ÓÎÄ¼ş¶ÁÈ¡ÊäÈë
+        fileIn.open("../res/wordsList");
     int t_start = clock();
-    while(fileIn >> tmpKey) //ä¸æ–­è¯»å–ä¸€ä¸ªkey,å­˜å…¥wordCount
+    while (fileIn >> tmpKey) //²»¶Ï¶ÁÈ¡Ò»¸ökey,´æÈëwordCount
         ++wordCount[tmpKey];
     fileIn.close();
-    cout << wordCount.size() << "ä¸ªå•è¯ä¿å­˜è‡³mapä¸­è€—æ—¶: " << clock() - t_start
+    cout << wordCount.size() << "¸öµ¥´Ê±£´æÖÁmapÖĞºÄÊ±: " << clock() - t_start
          << "ms" << endl;
     vector<pair<keyType, valueType> > sortVec;
     sortMapByValue(wordCount, sortVec);
-    cout << "æ’åºè€—æ—¶" << clock() - t_start << "ms\n" << endl << "top 20ï¼š\n";
-    for(int i = 0; i < 20; ++i)
+    cout << "ÅÅĞòºÄÊ±" << clock() - t_start << "ms\n" << endl << "top 20£º\n";
+    for (int i = 0; i < 20; ++i)
         cout << sortVec[i].first << " \t" << sortVec[i].second << endl;
     cin.get();
     return 0;
