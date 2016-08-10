@@ -52,7 +52,7 @@ int main()
     MapType wordCount;
     keyType tmpKey;
     time_t t_start = clock();
-    ifstream fin("artical.txt");
+    ifstream fin("../res/artical.txt");
     splitWordsAndSave(wordCount, fin); //如果想手工输入将参数改为(wordCount,cin)
     cout << wordCount.size() << " different words save to map took "
          << clock() - t_start << "ms, ";
